@@ -97,7 +97,6 @@ static CU_ErrorCode parse_options(int argc, char *argv[])
 {
     CU_ErrorCode err = CUE_SUCCESS;
 
-
     for (int i = 1; err == CUE_SUCCESS && i < argc; i++) {
         switch ((argv[i][0] == '-') ? argv[i][1] : 0) {
             case 'a':
@@ -115,23 +114,20 @@ static CU_ErrorCode parse_options(int argc, char *argv[])
             case 'r':
                 if((i+1) < argc){
                     opts.results = argv[++i];
-                    break;
                 }
-                /* FALLS THROUGH */
+                break;
             case 's':
                 if ((i+1) < argc) {
                     opts.suite = argv[++i];
-                    break;
                 }
-                /* FALLS THROUGH */
+                break;
             case 't':
                 if ((i+1) < argc) {
                     opts.test = argv[++i];
-                    break;
                 }
-                /* FALLS THROUGH */
+                break;
             default:
-                err = (CU_ErrorCode)256;
+                err = (CU_ErrorCode)-1;
                 CU_set_error(err); /* Will print as "Undefined Errpr" */
                 break;
         }
@@ -222,7 +218,7 @@ int main(int argc, char *argv[])
 
     err = CU_get_error();
     if (err == CUE_SUCCESS) {
-        err = (CU_ErrorCode)(CU_get_number_of_failures() == 0 ? 0 : 256);
+        err = (CU_ErrorCode)(CU_get_number_of_failures() == 0 ? 0 : -1);
     }
 
     CU_cleanup_registry();
